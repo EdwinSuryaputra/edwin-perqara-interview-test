@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  title: Edwin Perqara Interview Test (Vending Machine)
+  version: 1.0.0
+
+paths:
+  /vending/drinks:
+    get:
+      summary: Get all drinks inside of vending machine
+      responses:
+        '200':
+          description: Success get list of drinks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The id of drink
+                  name:
+                    type: string
+                    description: The name of drink
+                  price: 
+                    type: integer
+                    description: The price of drink
+                  stock:
+                    type: integer
+                    description: The stock of drink
+        '400':
+          description: Failed to retrieve list of drinks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /vending/drink:
+    post:
+      summary: Insert a new drink
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSpec"
+      responses:
+        "201":
+          description: Drink has been successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /vending/drink/{id}:
+    put:
+      summary: Update an existing of drink
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSpec"
+      responses:
+        "200":
+          description: "Drink has been successfully updated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: "Drink has been successfully deleted"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+                example: "Drink is not exist"
+
+components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    CreateSpec:
+      type: object
+      properties:
+        name:
+          description: The name of drink
+          type: string
+        price:
+          description: The price of drink
+          type: integer
+          minimum: 1
+          maximum: 999999
+        stock:
+          description: The stock of drink
+          type: integer
+          minimum: 1
+          maximum: 50
+    UpdateSpec:
+      type: object
+      properties:
+        name:
+          description: The name of drink
+          type: string
+        price:
+          description: The price of drink
+          type: integer
+          minimum: 1
+          maximum: 999999
+        stock:
+          description: Adjust the drink stocks
+          type: object
+          properties:
+            action:
+              type: string
+              description: Add or reduce stock
+            stock:
+              type: integer
+              description: Adjust amount of stock
+              minimum: 1
+              maximum: 20
+    SuccessResponse:
+      properties:
+        id:
+          type: string
+          description: The id of drink
+          example: b5fe3aae-13fe-42df-a427-878678444dca
+    ErrorResponse:
+      properties:
+        message:
+          type: string
+          description: error message
+          example: The drink is already exist
+  
