@@ -31,7 +31,7 @@ func validateGetStorageDrinksResponse(result []services.GetDrinksOutput) error {
 	return nil
 }
 
-func validatePostDrinkRequest(params *generated.PostStorageDrinkJSONRequestBody) error {
+func validatePostDrinkRequest(params *generated.PostApiV1StorageDrinkJSONRequestBody) error {
 	if params.Name == "" {
 		return errors.New("name is required")
 	}

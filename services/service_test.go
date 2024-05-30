@@ -5,10 +5,11 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/EdwinSuryaputra/edwin-perqara-interview-test/conf"
-	r "github.com/EdwinSuryaputra/edwin-perqara-interview-test/repository"
 	"github.com/stretchr/testify/assert"
 	gomock "go.uber.org/mock/gomock"
+
+	"github.com/EdwinSuryaputra/edwin-perqara-interview-test/conf"
+	r "github.com/EdwinSuryaputra/edwin-perqara-interview-test/repository"
 )
 
 func TestGetDrinks(t *testing.T) {
@@ -269,11 +270,11 @@ func TestDeleteDrink(t *testing.T) {
 	}
 
 	type scenario struct {
-		name     string
-		param    param
-		mock     func(param param)
-		isError  bool
-		err      error
+		name    string
+		param   param
+		mock    func(param param)
+		isError bool
+		err     error
 	}
 
 	ctx := context.Background()
@@ -293,8 +294,8 @@ func TestDeleteDrink(t *testing.T) {
 
 				mockRepo.EXPECT().DeleteDrink(ctx, gomock.Any()).Return(nil).Times(1)
 			},
-			isError:  false,
-			err:      nil,
+			isError: false,
+			err:     nil,
 		},
 		{
 			name: "Failed - Error while get drink",
@@ -308,8 +309,8 @@ func TestDeleteDrink(t *testing.T) {
 				mockRepo.EXPECT().GetDrinkByPublicId(ctx, "test_2").
 					Return(r.GetDrinkOutput{}, errors.New("Error while get drink")).Times(1)
 			},
-			isError:  true,
-			err:      errors.New("Error while get drink"),
+			isError: true,
+			err:     errors.New("Error while get drink"),
 		},
 		{
 			name: "Failed - Error while delete drink",
@@ -325,8 +326,8 @@ func TestDeleteDrink(t *testing.T) {
 
 				mockRepo.EXPECT().DeleteDrink(ctx, gomock.Any()).Return(errors.New("Error while delete drink")).Times(1)
 			},
-			isError:  true,
-			err:      errors.New("Error while delete drink"),
+			isError: true,
+			err:     errors.New("Error while delete drink"),
 		},
 	} {
 		t.Run(s.name, func(t *testing.T) {

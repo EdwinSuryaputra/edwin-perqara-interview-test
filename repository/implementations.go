@@ -1,6 +1,9 @@
 package repository
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 func (r *Repository) GetDrinks(ctx context.Context) (output []GetDrinkOutput, err error) {
 	rows, err := r.Db.QueryContext(ctx, `SELECT id, public_id, name, stock
@@ -8,7 +11,12 @@ func (r *Repository) GetDrinks(ctx context.Context) (output []GetDrinkOutput, er
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
 
 	for rows.Next() {
 		var row GetDrinkOutput
@@ -39,7 +47,12 @@ func (r *Repository) InsertDrink(ctx context.Context, input InsertDrinkInput) er
 	if err != nil {
 		return err
 	}
-	defer statement.Close()
+	defer func() {
+		err = statement.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
 
 	_, err = statement.ExecContext(ctx, input.DrinkPublicId, input.Name, input.Stock,
 		input.CreatedAt, input.CreatedBy, input.CreatedAt, input.CreatedBy)
@@ -57,7 +70,12 @@ func (r *Repository) UpdateDrink(ctx context.Context, input UpdateDrinkInput) er
 	if err != nil {
 		return err
 	}
-	defer statement.Close()
+	defer func() {
+		err = statement.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
 
 	_, err = statement.ExecContext(ctx, input.Name, input.Stock, input.UpdatedAt, input.UpdatedBy, input.DrinkId)
 	if err != nil {
@@ -74,7 +92,12 @@ func (r *Repository) DeleteDrink(ctx context.Context, input DeleteDrinkInput) er
 	if err != nil {
 		return err
 	}
-	defer statement.Close()
+	defer func() {
+		err = statement.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
 
 	_, err = statement.ExecContext(ctx, input.DeletedAt, input.DeletedBy, input.DrinkId)
 	if err != nil {

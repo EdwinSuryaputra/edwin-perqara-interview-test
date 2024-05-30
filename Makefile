@@ -7,7 +7,7 @@ ifneq (,$(wildcard .env))
     export
 endif
 
-.PHONY: init generate oapigen build run test test_api
+.PHONY: init generate oapigen build run test test_api swag
 
 init: generate
 	go mod tidy
@@ -24,7 +24,7 @@ build: cmd/main.go
 	@echo "Building..."
 	go build -o $@ $<
 
-run: init build
+run: init swag build 
 	@./build/main
 
 INTERFACES_GO_FILES := $(shell find services repository -name "interfaces.go")
@@ -41,3 +41,7 @@ test:
 test_api:
 	go clean -testcache
 	go test ./tests/...
+
+swag:
+	swag fmt
+	swag init -g ./cmd/main.go --parseInternal --parseDependency

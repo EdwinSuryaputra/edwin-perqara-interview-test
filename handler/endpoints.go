@@ -9,7 +9,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Server) GetStorageDrinks(c *gin.Context) {
+// Get Storage Drinks godoc
+//
+//	@Summary		Get storage drinks
+//	@Description	Get storage drinks
+//	@Tags			Storage Drinks
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	response.HandlerResponse[[]services.GetDrinksOutput]	"List of drinks"
+//	@Failure		400	{object}	response.HandlerErrorResponse							"Bad request - Error code and message"
+//	@Router			/api/v1/storage/drinks [GET]
+func (s *Server) GetApiV1StorageDrinks(c *gin.Context) {
 	ctx := c.Request.Context()
 	result, err := s.Service.GetDrinks(ctx)
 	if err != nil {
@@ -26,8 +36,19 @@ func (s *Server) GetStorageDrinks(c *gin.Context) {
 	c.JSON(http.StatusOK, response.HandlerRespondJsonSuccess(result))
 }
 
-func (s *Server) PostStorageDrink(c *gin.Context) {
-	params := new(generated.PostStorageDrinkJSONRequestBody)
+// Insert a drink into storage godoc
+//
+//	@Summary		Insert drink into storage
+//	@Description	Insert drink into storage
+//	@Tags			Storage Drinks
+//	@Accept			json
+//	@Produce		json
+//	@Param			requestBody	body		generated.PostApiV1StorageDrinkJSONRequestBody			true	"Insert drink request body"
+//	@Success		200			{object}	response.HandlerResponse[services.CreateDrinkOutput]	"Inserted drink"
+//	@Failure		400			{object}	response.HandlerErrorResponse							"Bad request - Error code and message"
+//	@Router			/api/v1/storage/drink [POST]
+func (s *Server) PostApiV1StorageDrink(c *gin.Context) {
+	params := new(generated.PostApiV1StorageDrinkJSONRequestBody)
 	if err := c.Bind(params); err != nil {
 		c.JSON(http.StatusBadRequest, response.HandlerResponseJsonError(err.Error()))
 		return
@@ -56,8 +77,20 @@ func (s *Server) PostStorageDrink(c *gin.Context) {
 	c.JSON(http.StatusCreated, response.HandlerRespondJsonSuccess(result))
 }
 
-func (s *Server) PutStorageDrinkId(c *gin.Context, id generated.Id) {
-	params := new(generated.PutStorageDrinkIdJSONRequestBody)
+// Update a drink on storage godoc
+//
+//	@Summary		Update a drink on storage
+//	@Description	Update a drink on storage
+//	@Tags			Storage Drinks
+//	@Accept			json
+//	@Produce		json
+//	@Param			id			path		string													true	"Drink Id"
+//	@Param			requestBody	body		generated.PutApiV1StorageDrinkIdJSONRequestBody			true	"Update drink request body"
+//	@Success		200			{object}	response.HandlerResponse[services.UpdateDrinkOutput]	"Updated drink"
+//	@Failure		400			{object}	response.HandlerErrorResponse							"Bad request - Error code and message"
+//	@Router			/api/v1/storage/drink/{id} [PUT]
+func (s *Server) PutApiV1StorageDrinkId(c *gin.Context, id generated.Id) {
+	params := new(generated.PutApiV1StorageDrinkIdJSONRequestBody)
 	if err := c.Bind(params); err != nil {
 		c.JSON(http.StatusBadRequest, response.HandlerResponseJsonError(err.Error()))
 		return
@@ -87,7 +120,18 @@ func (s *Server) PutStorageDrinkId(c *gin.Context, id generated.Id) {
 	c.JSON(http.StatusOK, response.HandlerRespondJsonSuccess(result))
 }
 
-func (s *Server) DeleteStorageDrinkId(c *gin.Context, id generated.Id) {
+// Delete a drink on storage godoc
+//
+//	@Summary		Delete a drink on storage
+//	@Description	Delete a drink on storage
+//	@Tags			Storage Drinks
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		string								true	"Drink Id"
+//	@Success		200	{object}	response.HandlerResponse[string]	"Deleted drink"
+//	@Failure		400	{object}	response.HandlerErrorResponse		"Bad request - Error code and message"
+//	@Router			/api/v1/storage/drink/{id} [DELETE]
+func (s *Server) DeleteApiV1StorageDrinkId(c *gin.Context, id generated.Id) {
 	ctx := c.Request.Context()
 	if err := validateDeleteDrinkRequest(id); err != nil {
 		c.JSON(http.StatusBadRequest, response.HandlerResponseJsonError(err.Error()))
