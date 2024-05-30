@@ -27,7 +27,7 @@ func TestGetStorageDrinks(t *testing.T) {
 	t.Run("Success - Get Drinks", func(t *testing.T) {
 		r := gin.New()
 
-		req := httptest.NewRequest(http.MethodGet, "/storage/drinks", nil)
+		req := httptest.NewRequest(http.MethodGet, "/api/v1/storage/drinks", nil)
 		w := httptest.NewRecorder()
 		c := gin.CreateTestContextOnly(w, r)
 		c.Request = req
@@ -47,7 +47,7 @@ func TestGetStorageDrinks(t *testing.T) {
 		mockResultInJson, _ := json.Marshal(response.HandlerRespondJsonSuccess(mockResult))
 
 		mockService.EXPECT().GetDrinks(c.Request.Context()).Return(mockResult, nil).Times(1)
-		endpoint.GetStorageDrinks(c)
+		endpoint.GetApiV1StorageDrinks(c)
 
 		assert.Equal(t, http.StatusOK, w.Code)
 		assert.Equal(t, string(mockResultInJson), w.Body.String())
@@ -56,13 +56,13 @@ func TestGetStorageDrinks(t *testing.T) {
 	t.Run("Failed - Error occurred during get drinks", func(t *testing.T) {
 		r := gin.New()
 
-		req := httptest.NewRequest(http.MethodGet, "/storage/drinks", nil)
+		req := httptest.NewRequest(http.MethodGet, "/api/v1/storage/drinks", nil)
 		w := httptest.NewRecorder()
 		c := gin.CreateTestContextOnly(w, r)
 		c.Request = req
 
 		mockService.EXPECT().GetDrinks(c.Request.Context()).Return(nil, errors.New("Some error")).Times(1)
-		endpoint.GetStorageDrinks(c)
+		endpoint.GetApiV1StorageDrinks(c)
 
 		mockResult, _ := json.Marshal(response.HandlerResponseJsonError("Some error"))
 
@@ -82,7 +82,7 @@ func TestPostStorageDrink(t *testing.T) {
 		r := gin.New()
 
 		requestBody := []byte(`{"name":"Item 1","stock": 1}`)
-		req := httptest.NewRequest(http.MethodPost, "/storage/drink", bytes.NewBuffer(requestBody))
+		req := httptest.NewRequest(http.MethodPost, "/api/v1/storage/drink", bytes.NewBuffer(requestBody))
 		req.Header.Set("Content-Type", "application/json")
 
 		w := httptest.NewRecorder()
@@ -90,7 +90,7 @@ func TestPostStorageDrink(t *testing.T) {
 		c.Request = req
 
 		mockService.EXPECT().InsertDrink(c.Request.Context(), s.CreateDrinkInput{Name: "Item 1", Stock: 1}).Return(s.CreateDrinkOutput{PublicId: "9a36d04f-61ca-4762-80a6-cef6044180c0", Name: "Item 1", Stock: 1}, nil).Times(1)
-		endpoint.PostStorageDrink(c)
+		endpoint.PostApiV1StorageDrink(c)
 
 		assert.Equal(t, http.StatusCreated, w.Code)
 		assert.Equal(t, `{"data":{"id":"9a36d04f-61ca-4762-80a6-cef6044180c0","name":"Item 1","stock":1}}`, w.Body.String())
@@ -108,7 +108,7 @@ func TestPutStorageDrink(t *testing.T) {
 		r := gin.New()
 
 		requestBody := []byte(`{"name":"Item 1","stock": 1}`)
-		req := httptest.NewRequest(http.MethodPut, "/storage/drink/9a36d04f-61ca-4762-80a6-cef6044180c0", bytes.NewBuffer(requestBody))
+		req := httptest.NewRequest(http.MethodPut, "/api/v1/storage/drink/9a36d04f-61ca-4762-80a6-cef6044180c0", bytes.NewBuffer(requestBody))
 		req.Header.Set("Content-Type", "application/json")
 
 		w := httptest.NewRecorder()
@@ -117,7 +117,7 @@ func TestPutStorageDrink(t *testing.T) {
 
 		mockService.EXPECT().UpdateDrink(c.Request.Context(), s.UpdateDrinkInput{PublicId: "9a36d04f-61ca-4762-80a6-cef6044180c0", Name: "Item 1", Stock: 1}).
 			Return(s.UpdateDrinkOutput{PublicId: "9a36d04f-61ca-4762-80a6-cef6044180c0", Name: "Item 1", Stock: 1}, nil).Times(1)
-		endpoint.PutStorageDrinkId(c, "9a36d04f-61ca-4762-80a6-cef6044180c0")
+		endpoint.PutApiV1StorageDrinkId(c, "9a36d04f-61ca-4762-80a6-cef6044180c0")
 
 		assert.Equal(t, http.StatusOK, w.Code)
 		assert.Equal(t, `{"data":{"id":"9a36d04f-61ca-4762-80a6-cef6044180c0","name":"Item 1","stock":1}}`, w.Body.String())
@@ -134,7 +134,7 @@ func TestDeleteStorageDrink(t *testing.T) {
 	t.Run("Success - Delete drink on storage", func(t *testing.T) {
 		r := gin.New()
 
-		req := httptest.NewRequest(http.MethodDelete, "/storage/drink/9a36d04f-61ca-4762-80a6-cef6044180c0", nil)
+		req := httptest.NewRequest(http.MethodDelete, "/api/v1/storage/drink/9a36d04f-61ca-4762-80a6-cef6044180c0", nil)
 
 		w := httptest.NewRecorder()
 		c := gin.CreateTestContextOnly(w, r)
@@ -142,7 +142,7 @@ func TestDeleteStorageDrink(t *testing.T) {
 
 		mockService.EXPECT().DeleteDrink(c.Request.Context(), s.DeleteDrinkInput{PublicId: "9a36d04f-61ca-4762-80a6-cef6044180c0"}).
 			Return(nil).Times(1)
-		endpoint.DeleteStorageDrinkId(c, "9a36d04f-61ca-4762-80a6-cef6044180c0")
+		endpoint.DeleteApiV1StorageDrinkId(c, "9a36d04f-61ca-4762-80a6-cef6044180c0")
 
 		assert.Equal(t, http.StatusOK, w.Code)
 		assert.Equal(t, `{"data":"Success"}`, w.Body.String())

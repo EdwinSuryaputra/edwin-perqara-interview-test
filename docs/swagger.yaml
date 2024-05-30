@@ -1,0 +1,186 @@
+definitions:
+  generated.PostApiV1StorageDrinkJSONRequestBody:
+    properties:
+      name:
+        description: Name The name of drink
+        type: string
+      stock:
+        description: Stock The stock of drink
+        type: integer
+    type: object
+  generated.PutApiV1StorageDrinkIdJSONRequestBody:
+    properties:
+      name:
+        description: Name The name of drink
+        type: string
+      stock:
+        description: Stock Adjust amount of stock
+        type: integer
+    type: object
+  github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerErrorResponse:
+    properties:
+      error:
+        $ref: '#/definitions/github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerErrorResponseData'
+    type: object
+  github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerErrorResponseData:
+    properties:
+      message:
+        type: string
+    type: object
+  github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerResponse-array_services_GetDrinksOutput:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/services.GetDrinksOutput'
+        type: array
+    type: object
+  github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerResponse-services_CreateDrinkOutput:
+    properties:
+      data:
+        $ref: '#/definitions/services.CreateDrinkOutput'
+    type: object
+  github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerResponse-services_UpdateDrinkOutput:
+    properties:
+      data:
+        $ref: '#/definitions/services.UpdateDrinkOutput'
+    type: object
+  github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerResponse-string:
+    properties:
+      data:
+        type: string
+    type: object
+  services.CreateDrinkOutput:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      stock:
+        type: integer
+    type: object
+  services.GetDrinksOutput:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      stock:
+        type: integer
+    type: object
+  services.UpdateDrinkOutput:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      stock:
+        type: integer
+    type: object
+host: localhost:5000
+info:
+  contact: {}
+  description: This is Perqara interview purpose.
+  title: edwin-perqara-interview-test
+  version: 0.1.0
+paths:
+  /api/v1/storage/drink:
+    post:
+      consumes:
+      - application/json
+      description: Insert drink into storage
+      parameters:
+      - description: Insert drink request body
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/generated.PostApiV1StorageDrinkJSONRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Inserted drink
+          schema:
+            $ref: '#/definitions/github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerResponse-services_CreateDrinkOutput'
+        "400":
+          description: Bad request - Error code and message
+          schema:
+            $ref: '#/definitions/github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerErrorResponse'
+      summary: Insert drink into storage
+      tags:
+      - Storage Drinks
+  /api/v1/storage/drink/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a drink on storage
+      parameters:
+      - description: Drink Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted drink
+          schema:
+            $ref: '#/definitions/github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerResponse-string'
+        "400":
+          description: Bad request - Error code and message
+          schema:
+            $ref: '#/definitions/github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerErrorResponse'
+      summary: Delete a drink on storage
+      tags:
+      - Storage Drinks
+    put:
+      consumes:
+      - application/json
+      description: Update a drink on storage
+      parameters:
+      - description: Drink Id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update drink request body
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/generated.PutApiV1StorageDrinkIdJSONRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated drink
+          schema:
+            $ref: '#/definitions/github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerResponse-services_UpdateDrinkOutput'
+        "400":
+          description: Bad request - Error code and message
+          schema:
+            $ref: '#/definitions/github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerErrorResponse'
+      summary: Update a drink on storage
+      tags:
+      - Storage Drinks
+  /api/v1/storage/drinks:
+    get:
+      consumes:
+      - application/json
+      description: Get storage drinks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of drinks
+          schema:
+            $ref: '#/definitions/github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerResponse-array_services_GetDrinksOutput'
+        "400":
+          description: Bad request - Error code and message
+          schema:
+            $ref: '#/definitions/github_com_EdwinSuryaputra_edwin-perqara-interview-test_constant_response.HandlerErrorResponse'
+      summary: Get storage drinks
+      tags:
+      - Storage Drinks
+swagger: "2.0"
