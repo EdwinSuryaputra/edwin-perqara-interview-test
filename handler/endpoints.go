@@ -13,7 +13,7 @@ func (s *Server) GetStorageDrinks(c *gin.Context) {
 	ctx := c.Request.Context()
 	result, err := s.Service.GetDrinks(ctx)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, response.HandlerResponseJsonError(err.Error()))
+		c.JSON(http.StatusUnprocessableEntity, response.HandlerResponseJsonError(err.Error()))
 		return
 	}
 
