@@ -12,6 +12,8 @@ import (
 )
 
 func main() {
+	conf.Init()
+
 	cfg := conf.App
 	r := gin.Default()
 
@@ -25,6 +27,9 @@ func newServer() *handler.Server {
 	cfg := conf.DB
 
 	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", cfg.Host, cfg.Port, cfg.User, cfg.Pass, cfg.Name)
+
+	println("DSN: ", dsn)
+
 	var repo repository.RepositoryInterface = repository.NewRepository(repository.NewRepositoryOptions{
 		Dsn: dsn,
 	})
