@@ -9,4 +9,4 @@ CREATE TABLE storage_drinks (
     updated_by VARCHAR(100) NOT NULL,
     deleted_at timestamp NULL,
     deleted_by VARCHAR(100) NULL
-)
+);

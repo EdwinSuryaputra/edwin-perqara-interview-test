@@ -16,6 +16,7 @@ func (s *Service) GetDrinks(ctx context.Context) (output []GetDrinksOutput, err 
 		return nil, err
 	}
 
+	output = []GetDrinksOutput{}
 	for _, drink := range drinks {
 		output = append(output, GetDrinksOutput{DrinkPublicId: drink.DrinkPublicId, Name: drink.Name, Stock: drink.Stock})
 	}
@@ -37,7 +38,7 @@ func (s *Service) InsertDrink(ctx context.Context, input CreateDrinkInput) (outp
 		return output, err
 	}
 
-	return CreateDrinkOutput{PublicId: publicId}, nil
+	return CreateDrinkOutput{PublicId: publicId, Name: input.Name, Stock: input.Stock}, nil
 }
 
 func (s *Service) UpdateDrink(ctx context.Context, input UpdateDrinkInput) (output UpdateDrinkOutput, err error) {
