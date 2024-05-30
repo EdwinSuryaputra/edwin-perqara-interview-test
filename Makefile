@@ -7,10 +7,12 @@ ifneq (,$(wildcard .env))
     export
 endif
 
-.PHONY: init oapigen build run
+.PHONY: init generate oapigen build run test test_api
 
-init: oapigen
+init: generate
 	go mod tidy
+
+generate: oapigen generate_mocks
 
 oapigen: 
 	rm -rf generated
@@ -25,3 +27,17 @@ build: cmd/main.go
 run: init build
 	@./build/main
 
+INTERFACES_GO_FILES := $(shell find services repository -name "interfaces.go")
+INTERFACES_GEN_GO_FILES := $(INTERFACES_GO_FILES:%.go=%.mock.gen.go)
+generate_mocks: $(INTERFACES_GEN_GO_FILES)
+$(INTERFACES_GEN_GO_FILES): %.mock.gen.go: %.go
+	@echo "Generating mocks $@ for $<"
+	mockgen -source=$< -destination=$@ -package=$(shell basename $(dir $<))
+
+test:
+	go clean -testcache
+	go test -short -coverprofile coverage.out -short -v ./...
+
+test_api:
+	go clean -testcache
+	go test ./tests/...
