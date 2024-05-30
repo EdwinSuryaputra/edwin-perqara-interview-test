@@ -7,19 +7,21 @@ ifneq (,$(wildcard .env))
     export
 endif
 
-.PHONY: build
-build:
-	@go build -o $(NAME)
+.PHONY: init oapigen build run
 
-.PHONY: run
-run: build
-	@./$(NAME)
-
-generate: oapigen 
+init: oapigen
+	go mod tidy
 
 oapigen: 
 	rm -rf generated
 	@echo "Generating files..."
 	mkdir generated || true
 	oapi-codegen --config=apiconfig.yml api.yml
+
+build: cmd/main.go 
+	@echo "Building..."
+	go build -o $@ $<
+
+run: init build
+	@./build/main
 

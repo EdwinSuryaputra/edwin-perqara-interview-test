@@ -98,6 +98,9 @@ components:
         type: string
   schemas:
     CreateSpec:
+      required:
+        - "name"
+        - "stock"
       type: object
       properties:
         name:
@@ -109,6 +112,9 @@ components:
           minimum: 1
           maximum: 50
     UpdateSpec:
+      required:
+        - "name"
+        - "stock"
       type: object
       properties:
         name:

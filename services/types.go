@@ -1,9 +1,9 @@
 package services
 
 type GetDrinksOutput struct {
-	DrinkPublicId string
-	Name          string
-	Stock         int
+	DrinkPublicId string `json:"id"`
+	Name          string `json:"name"`
+	Stock         int    `json:"stock"`
 }
 
 type CreateDrinkInput struct {
