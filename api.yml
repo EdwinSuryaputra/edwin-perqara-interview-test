@@ -110,7 +110,6 @@ components:
           description: The stock of drink
           type: integer
           minimum: 1
-          maximum: 50
     UpdateSpec:
       required:
         - "name"
@@ -124,7 +123,6 @@ components:
           type: integer
           description: Adjust amount of stock
           minimum: 1
-          maximum: 20
     SuccessResponse:
       properties:
         id:
@@ -136,5 +134,5 @@ components:
         message:
           type: string
           description: error message
-          example: The drink is already exist
+          example: drink is not exist
   
