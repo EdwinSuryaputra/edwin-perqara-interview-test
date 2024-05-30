@@ -22,7 +22,7 @@ import (
 //	@version		0.1.0
 //	@description	This is Perqara interview purpose.
 
-//	@host	localhost:5000
+// @host	localhost:5000
 func main() {
 	conf.Init()
 
@@ -34,7 +34,10 @@ func main() {
 
 	r.Use(middleware.OapiRequestValidator(newSwagger(r)))
 
-	r.Run(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port))
+	err := r.Run(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port))
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 func newServer() *handler.Server {

@@ -1,8 +1,9 @@
 package conf
 
 import (
-	"fmt"
 	"github.com/kelseyhightower/envconfig"
+
+	"fmt"
 )
 
 var (
