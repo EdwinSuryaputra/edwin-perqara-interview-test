@@ -16,9 +16,6 @@ type CreateSpec struct {
 	// Name The name of drink
 	Name *string `json:"name,omitempty"`
 
-	// Price The price of drink
-	Price *int `json:"price,omitempty"`
-
 	// Stock The stock of drink
 	Stock *int `json:"stock,omitempty"`
 }
@@ -40,42 +37,33 @@ type UpdateSpec struct {
 	// Name The name of drink
 	Name *string `json:"name,omitempty"`
 
-	// Price The price of drink
-	Price *int `json:"price,omitempty"`
-
-	// Stock Adjust the drink stocks
-	Stock *struct {
-		// Action Add or reduce stock
-		Action *string `json:"action,omitempty"`
-
-		// Stock Adjust amount of stock
-		Stock *int `json:"stock,omitempty"`
-	} `json:"stock,omitempty"`
+	// Stock Adjust amount of stock
+	Stock *int `json:"stock,omitempty"`
 }
 
 // Id defines model for id.
 type Id = string
 
-// PostVendingDrinkJSONRequestBody defines body for PostVendingDrink for application/json ContentType.
-type PostVendingDrinkJSONRequestBody = CreateSpec
+// PostStorageDrinkJSONRequestBody defines body for PostStorageDrink for application/json ContentType.
+type PostStorageDrinkJSONRequestBody = CreateSpec
 
-// PutVendingDrinkIdJSONRequestBody defines body for PutVendingDrinkId for application/json ContentType.
-type PutVendingDrinkIdJSONRequestBody = UpdateSpec
+// PutStorageDrinkIdJSONRequestBody defines body for PutStorageDrinkId for application/json ContentType.
+type PutStorageDrinkIdJSONRequestBody = UpdateSpec
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// Insert a new drink
-	// (POST /vending/drink)
-	PostVendingDrink(c *gin.Context)
+	// (POST /storage/drink)
+	PostStorageDrink(c *gin.Context)
 
-	// (DELETE /vending/drink/{id})
-	DeleteVendingDrinkId(c *gin.Context, id Id)
+	// (DELETE /storage/drink/{id})
+	DeleteStorageDrinkId(c *gin.Context, id Id)
 	// Update an existing of drink
-	// (PUT /vending/drink/{id})
-	PutVendingDrinkId(c *gin.Context, id Id)
-	// Get all drinks inside of vending machine
-	// (GET /vending/drinks)
-	GetVendingDrinks(c *gin.Context)
+	// (PUT /storage/drink/{id})
+	PutStorageDrinkId(c *gin.Context, id Id)
+	// Get all drinks inside of storage
+	// (GET /storage/drinks)
+	GetStorageDrinks(c *gin.Context)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -87,8 +75,8 @@ type ServerInterfaceWrapper struct {
 
 type MiddlewareFunc func(c *gin.Context)
 
-// PostVendingDrink operation middleware
-func (siw *ServerInterfaceWrapper) PostVendingDrink(c *gin.Context) {
+// PostStorageDrink operation middleware
+func (siw *ServerInterfaceWrapper) PostStorageDrink(c *gin.Context) {
 
 	for _, middleware := range siw.HandlerMiddlewares {
 		middleware(c)
@@ -97,11 +85,11 @@ func (siw *ServerInterfaceWrapper) PostVendingDrink(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.PostVendingDrink(c)
+	siw.Handler.PostStorageDrink(c)
 }
 
-// DeleteVendingDrinkId operation middleware
-func (siw *ServerInterfaceWrapper) DeleteVendingDrinkId(c *gin.Context) {
+// DeleteStorageDrinkId operation middleware
+func (siw *ServerInterfaceWrapper) DeleteStorageDrinkId(c *gin.Context) {
 
 	var err error
 
@@ -121,11 +109,11 @@ func (siw *ServerInterfaceWrapper) DeleteVendingDrinkId(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.DeleteVendingDrinkId(c, id)
+	siw.Handler.DeleteStorageDrinkId(c, id)
 }
 
-// PutVendingDrinkId operation middleware
-func (siw *ServerInterfaceWrapper) PutVendingDrinkId(c *gin.Context) {
+// PutStorageDrinkId operation middleware
+func (siw *ServerInterfaceWrapper) PutStorageDrinkId(c *gin.Context) {
 
 	var err error
 
@@ -145,11 +133,11 @@ func (siw *ServerInterfaceWrapper) PutVendingDrinkId(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.PutVendingDrinkId(c, id)
+	siw.Handler.PutStorageDrinkId(c, id)
 }
 
-// GetVendingDrinks operation middleware
-func (siw *ServerInterfaceWrapper) GetVendingDrinks(c *gin.Context) {
+// GetStorageDrinks operation middleware
+func (siw *ServerInterfaceWrapper) GetStorageDrinks(c *gin.Context) {
 
 	for _, middleware := range siw.HandlerMiddlewares {
 		middleware(c)
@@ -158,7 +146,7 @@ func (siw *ServerInterfaceWrapper) GetVendingDrinks(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.GetVendingDrinks(c)
+	siw.Handler.GetStorageDrinks(c)
 }
 
 // GinServerOptions provides options for the Gin server.
@@ -188,8 +176,8 @@ func RegisterHandlersWithOptions(router gin.IRouter, si ServerInterface, options
 		ErrorHandler:       errorHandler,
 	}
 
-	router.POST(options.BaseURL+"/vending/drink", wrapper.PostVendingDrink)
-	router.DELETE(options.BaseURL+"/vending/drink/:id", wrapper.DeleteVendingDrinkId)
-	router.PUT(options.BaseURL+"/vending/drink/:id", wrapper.PutVendingDrinkId)
-	router.GET(options.BaseURL+"/vending/drinks", wrapper.GetVendingDrinks)
+	router.POST(options.BaseURL+"/storage/drink", wrapper.PostStorageDrink)
+	router.DELETE(options.BaseURL+"/storage/drink/:id", wrapper.DeleteStorageDrinkId)
+	router.PUT(options.BaseURL+"/storage/drink/:id", wrapper.PutStorageDrinkId)
+	router.GET(options.BaseURL+"/storage/drinks", wrapper.GetStorageDrinks)
 }

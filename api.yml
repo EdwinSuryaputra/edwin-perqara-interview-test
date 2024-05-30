@@ -1,12 +1,12 @@
 openapi: 3.0.0
 info:
-  title: Edwin Perqara Interview Test (Vending Machine)
-  version: 1.0.0
+  title: Edwin Perqara Interview Test (Storage Drink)
+  version: 0.1.0
 
 paths:
-  /vending/drinks:
+  /storage/drinks:
     get:
-      summary: Get all drinks inside of vending machine
+      summary: Get all drinks inside of storage
       responses:
         '200':
           description: Success get list of drinks
@@ -21,9 +21,6 @@ paths:
                   name:
                     type: string
                     description: The name of drink
-                  price: 
-                    type: integer
-                    description: The price of drink
                   stock:
                     type: integer
                     description: The stock of drink
@@ -33,7 +30,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-  /vending/drink:
+  /storage/drink:
     post:
       summary: Insert a new drink
       requestBody: 
@@ -55,7 +52,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-  /vending/drink/{id}:
+  /storage/drink/{id}:
     put:
       summary: Update an existing of drink
       parameters:
@@ -106,11 +103,6 @@ components:
         name:
           description: The name of drink
           type: string
-        price:
-          description: The price of drink
-          type: integer
-          minimum: 1
-          maximum: 999999
         stock:
           description: The stock of drink
           type: integer
@@ -122,23 +114,11 @@ components:
         name:
           description: The name of drink
           type: string
-        price:
-          description: The price of drink
-          type: integer
-          minimum: 1
-          maximum: 999999
         stock:
-          description: Adjust the drink stocks
-          type: object
-          properties:
-            action:
-              type: string
-              description: Add or reduce stock
-            stock:
-              type: integer
-              description: Adjust amount of stock
-              minimum: 1
-              maximum: 20
+          type: integer
+          description: Adjust amount of stock
+          minimum: 1
+          maximum: 20
     SuccessResponse:
       properties:
         id:

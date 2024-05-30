@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"github.com/EdwinSuryaputra/edwin-sawitpro-be-interview-test/repository"
-	"github.com/EdwinSuryaputra/edwin-sawitpro-be-interview-test/services"
+	"github.com/EdwinSuryaputra/edwin-perqara-interview-test/repository"
+	"github.com/EdwinSuryaputra/edwin-perqara-interview-test/services"
 )
 
 type Server struct {
